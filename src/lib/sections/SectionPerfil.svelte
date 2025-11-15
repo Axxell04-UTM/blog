@@ -35,7 +35,7 @@
     >
         <div>
             <span class="font-semibold">
-                Nombre de usuario:
+                Usuario:
             </span>
             <input type="text" class="bg-emerald-50 outline-none rounded-sm">
         </div>
