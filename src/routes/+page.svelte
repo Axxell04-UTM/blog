@@ -30,7 +30,7 @@
 <div class="min-h-screen flex items-start justify-center bg-linear-to-b from-emerald-50 to-white py-8 px-4">
   <main class="w-full max-w-3xl space-y-6">
     <header class="text-center">
-      <h1 class="text-3xl font-extrabold text-emerald-700">Mi Foro</h1>
+      <h1 class="text-3xl font-extrabold text-emerald-700">Mi Foro Version A</h1>
       <p class="mt-1 text-sm text-emerald-600/80">Comparte ideas, comenta y participa</p>
     </header>
 
