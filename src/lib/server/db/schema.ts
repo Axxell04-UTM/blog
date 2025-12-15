@@ -15,11 +15,25 @@ export const session = pgTable('session', {
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull()
 });
 
+
+export const post = pgTable('post', {
+	id: text('id').primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id),
+	title: text('title').notNull(),
+	content: text('content').notNull(),
+	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull()	
+});
+
 export const comment = pgTable('comment', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
 		.references(() => user.id),
+	postId: text('post_id')
+		.notNull()
+		.references(() => post.id),
 	text: text('text').notNull(),
 	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull()
 });
@@ -27,5 +41,7 @@ export const comment = pgTable('comment', {
 export type Session = typeof session.$inferSelect;
 
 export type User = typeof user.$inferSelect;
+
+export type Post = typeof post.$inferInsert;
 
 export type Comment = typeof comment.$inferInsert;

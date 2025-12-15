@@ -8,7 +8,7 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 	<title>
-		Foro
+		¡Mi Blog!
 	</title>
 </svelte:head>
 

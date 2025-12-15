@@ -12,11 +12,12 @@ export async function getComments () {
     }
 }
 
-export async function createComment (userId: string, comment: string) {
+export async function createComment (userId: string, postId: string, comment: string) {
     try {
         const newComment: table.Comment = {
             id: generateId(),
             userId: userId,
+            postId: postId,
             text: comment,
             createdAt: new Date(Date.now())
         }

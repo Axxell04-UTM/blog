@@ -3,6 +3,7 @@ import * as table from '$lib/server/db/schema'
 import { hash } from '@node-rs/argon2';
 import { encodeBase32LowerCase } from '@oslojs/encoding';
 import { eq } from 'drizzle-orm';
+import { getPostsOfUser } from './post';
 
 export async function createUser(username: string, password: string) {
 
@@ -35,6 +36,34 @@ export async function getUserNameById (id: string) {
     }
     return "Anónimo"
 }
+
+
+type getUserProfileOptions = {
+    id?: string
+    username?: string
+}
+export async function getUserProfile (options: getUserProfileOptions) {
+    const { id, username } = options;
+    console.log(username)
+    if (id || username) {
+        try {
+            const [user] = await db.select({ id: table.user.id, username: table.user.username }).from(table.user).where(id ? eq(table.user.id, id) : eq(table.user.username, username as string));
+            console.log(user);
+            const posts = await getPostsOfUser(user.id);
+            const profile = {
+                user_id: user.id,
+                username: user.username,
+                posts
+            }
+            return profile;
+        } catch (e) {
+            console.error("Error al realizar la consulta: " + e);
+            return null;
+        }
+    }
+}
+
+getUserProfile({})
 
 export async function deleteUser (id: string) {
     await db.delete(table.session).where(eq(table.session.userId, id)).execute();
