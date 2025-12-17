@@ -2,9 +2,9 @@ name: CI/CD SvelteKit
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   pull_request:
-    branches: ["main"]
+    branches: ['main']
 
 jobs:
   # ===========================
@@ -20,7 +20,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Instalar dependencias
         run: npm install
@@ -33,7 +33,6 @@ jobs:
 
       - name: Build de SvelteKit
         run: npm run build
-
 
   # ===========================
   # JOB 2: DOCKER + DEPLOY
