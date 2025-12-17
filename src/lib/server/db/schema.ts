@@ -15,7 +15,6 @@ export const session = pgTable('session', {
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull()
 });
 
-
 export const post = pgTable('post', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
@@ -23,7 +22,7 @@ export const post = pgTable('post', {
 		.references(() => user.id),
 	title: text('title').notNull(),
 	content: text('content').notNull(),
-	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull()	
+	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull()
 });
 
 export const comment = pgTable('comment', {

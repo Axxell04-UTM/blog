@@ -7,9 +7,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>
-		¡Mi Blog!
-	</title>
+	<title>¡Mi Blog!</title>
 </svelte:head>
 
 {@render children()}
