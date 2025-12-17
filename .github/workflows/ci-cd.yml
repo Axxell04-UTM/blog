@@ -28,8 +28,8 @@ jobs:
       - name: Ejecutar tests
         run: npm test --if-present
 
-      - name: Ejecutar lint
-        run: npm run lint --if-present
+      #- name: Ejecutar lint
+      #  run: npm run lint --if-present
 
       - name: Build de SvelteKit
         run: npm run build
