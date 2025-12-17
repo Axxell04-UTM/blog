@@ -25,6 +25,9 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
+      - name: Set up environment variables
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+
       - name: Ejecutar tests
         run: npm test --if-present
 
