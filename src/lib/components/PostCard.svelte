@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import type { Post } from '$lib/interfaces/post';
 	import { onMount } from 'svelte';
-	import { fade, scale } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	interface Props {
 		post: Post;
@@ -33,8 +34,8 @@
 		goto(urlPost);
 	}
 
-	function goToProfile() {
-		goto(`/${username}/`);
+	async function goToProfile() {
+		await goto(resolve(`/${username}/`));
 	}
 </script>
 
