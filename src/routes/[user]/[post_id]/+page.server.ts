@@ -5,6 +5,8 @@ import type { PageServerLoad } from './$types';
 import { getPostsByUserId } from '$lib/server/post';
 import type { Profile } from '$lib/interfaces/profile';
 
+export { config } from '$lib/server/vercel';
+
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const post_id = params.post_id;
 	const post = await getPostById(post_id);

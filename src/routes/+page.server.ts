@@ -10,6 +10,8 @@ import type { Profile } from '$lib/interfaces/profile';
 import { createComment, getComments } from '$lib/server/comment';
 import { createPost, deletePost, getPosts, getPostsByUserId, updatePost } from '$lib/server/post';
 
+export { config } from '$lib/server/vercel';
+
 export const load: PageServerLoad = async ({ locals }) => {
 	const posts = await getPosts();
 	if (!locals.user) {
