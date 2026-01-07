@@ -2,14 +2,25 @@
 	import { page } from '$app/state';
 	import BackButton from '$lib/components/BackButton.svelte';
 	import PostCard from '$lib/components/PostCard.svelte';
+	import { onMount } from 'svelte';
 	import type { PageProps } from './$types';
 	import Icon from '@iconify/svelte';
+	import type { Post } from '$lib/server/db/schema';
 
 	let { data }: PageProps = $props();
 
 	let user = page.params.user;
 
 	let profile = $state(data.profile);
+
+	function setPosts(newPosts: Post[], toProfile?: boolean) {
+		if (toProfile && profile) {
+			profile.posts = newPosts;
+		} else {
+			// posts = newPosts;
+		}
+	}
+	
 </script>
 
 <div class="flex min-h-screen flex-col bg-linear-to-b from-emerald-50 to-white p-4">
@@ -43,7 +54,7 @@
 
 	<section class="flex flex-col gap-2">
 		{#each profile.posts as post}
-			<PostCard {post} />
+			<PostCard {post} {profile} {setPosts} />
 		{/each}
 	</section>
 </div>

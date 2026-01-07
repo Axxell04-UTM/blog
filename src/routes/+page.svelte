@@ -8,6 +8,7 @@
 	import type { Comment } from '$lib/interfaces/comment';
 	import type { Post } from '$lib/interfaces/post';
 	import PostCard from '$lib/components/PostCard.svelte';
+	import { onMount } from 'svelte';
 	let session = false;
 
 	let { data }: PageProps = $props();
@@ -23,8 +24,12 @@
 		profile = newProfile;
 	}
 
-	function setPosts(newPosts: Post[]) {
-		posts = newPosts;
+	function setPosts(newPosts: Post[], toProfile?: boolean) {
+		if (toProfile && profile) {
+			profile.posts = newPosts;
+		} else {
+			posts = newPosts;
+		}
 	}
 
 	function updatePostsOfProfile(newPosts: Post[]) {
@@ -61,6 +66,7 @@
 			resMessage = '';
 		}, 2000);
 	}
+
 </script>
 
 <div
@@ -179,7 +185,7 @@
 				{#each profile.posts as post (post.id)}
 					{#key post.id}
 						<div in:scale>
-							<PostCard {post} />
+							<PostCard {post} {profile} {setPosts} />
 						</div>
 					{/key}
 				{/each}
@@ -194,7 +200,7 @@
 				{#each posts as post (post.id)}
 					{#key post.id}
 						<div in:scale>
-							<PostCard {post} />
+							<PostCard {post} {profile} {setPosts} />
 						</div>
 					{/key}
 				{/each}

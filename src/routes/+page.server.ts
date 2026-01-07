@@ -8,7 +8,7 @@ import { verify } from '@node-rs/argon2';
 import { createUser } from '$lib/server/user';
 import type { Profile } from '$lib/interfaces/profile';
 import { createComment, getComments } from '$lib/server/comment';
-import { createPost, getPosts, getPostsByUserId } from '$lib/server/post';
+import { createPost, deletePost, getPosts, getPostsByUserId, updatePost } from '$lib/server/post';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const posts = await getPosts();
@@ -164,6 +164,42 @@ export const actions: Actions = {
 		} catch {
 			return fail(500, { message: 'A ocurrido un error en el servidor' });
 		}
+	},
+	update_post: async (event) => {
+		const formData = await event.request.formData();
+		const profileId = formData.get('profile_id');
+		const postId = formData.get('post_id') as string;
+		const newTitle = formData.get('new_title') as string;
+		const newContent = formData.get("new_content") as string;
+		if (!validateProfileId(profileId)) {
+			return fail(401, { message: 'Id de perfil incorrecto' });
+		}
+		await updatePost(postId, newTitle, newContent);
+		const posts = await getPosts();
+		const myPosts = await getPostsByUserId(profileId);
+
+		return {
+			posts,
+			myPosts
+		}
+	},
+	delete_post: async (event) => {
+		const formData = await event.request.formData();
+		const postId = formData.get('post_id') as string;
+		const profileId = formData.get('profile_id');
+		if (!validateProfileId(profileId)) {
+			return fail(401, { message: 'Id de perfil incorrecto' });
+		}
+
+		await deletePost(postId);
+		const posts = await getPosts();
+		const myPosts = await getPostsByUserId(profileId);
+
+		return {
+			posts,
+			myPosts
+		}
+		
 	},
 	send_comment: async (event) => {
 		const formData = await event.request.formData();
