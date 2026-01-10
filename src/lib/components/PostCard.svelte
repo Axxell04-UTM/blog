@@ -8,6 +8,7 @@
 	import { fade } from 'svelte/transition';
 	import Icon from "@iconify/svelte";
 	import { enhance } from '$app/forms';
+	import { toastMessage } from '$lib/stores';
 
 	interface Props {
 		post: Post;
@@ -113,7 +114,7 @@
 				Editar
 			</button>
 			{:else}
-			<form method="post" action="?/update_post" use:enhance={() => {
+			<form method="post" action="/?/update_post" use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === "success") {
 						const posts = result.data?.posts as Post[];
@@ -123,8 +124,9 @@
 						}
 						if (myPosts) {
 							setPosts(myPosts, true);
-							closeEditMode();
 						}
+						$toastMessage = "Blog Editado";
+						closeEditMode();
 					}
 				}
 			}}>
@@ -149,7 +151,7 @@
 				<Icon icon="iconamoon:close-bold" class="text-2xl" />
 			</button>
 
-			<form method="post" action="?/delete_post" use:enhance={() => {
+			<form method="post" action="/?/delete_post" use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === "success") {
 						const posts = result.data?.posts as Post[];
@@ -160,7 +162,8 @@
 						if (myPosts) {
 							setPosts(myPosts, true);
 						}
-						closeEditMode();
+						$toastMessage = "Blog Eliminado";
+						closeEditMode();						
 					}
 				}
 			}}>

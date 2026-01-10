@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { previousPath } from '$lib/stores';
 	import Icon from '@iconify/svelte';
+	
 
 	function goBack() {
-		history.back();
+		if ($previousPath) {
+			goto($previousPath)
+		}
 	}
 </script>
 

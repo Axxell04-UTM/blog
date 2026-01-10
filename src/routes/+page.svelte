@@ -8,9 +8,10 @@
 	import type { Comment } from '$lib/interfaces/comment';
 	import type { Post } from '$lib/interfaces/post';
 	import PostCard from '$lib/components/PostCard.svelte';
-	import { onMount } from 'svelte';
+	import { toastMessage } from '$lib/stores';
+	
 	let session = false;
-
+	
 	let { data }: PageProps = $props();
 	let profile: Profile | undefined = $state(data.profile);
 	let posts: Post[] = $state(data.posts);
@@ -112,6 +113,7 @@
 								setPosts(result.data?.posts as Post[]);
 								formElement.reset();
 								toggleFormNewPostIsVisible(false);
+								$toastMessage = "Blog Publicado";
 							}
 						};
 					}}
