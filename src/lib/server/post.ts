@@ -47,7 +47,7 @@ export async function getPostsByUserId (userId: string) {
 	}
 }
 
-export async function createPost (userId: string, title: string, content: string) {
+export async function createPost (userId: string, title: string, content: string, imgUrl: string = "") {
 	try {
 		const postId = generateId();
 		const newPost: table.Post = {
@@ -55,7 +55,8 @@ export async function createPost (userId: string, title: string, content: string
 			userId: userId,
 			title: title,
 			content: content,
-			createdAt: new Date(Date.now())
+			createdAt: new Date(Date.now()),
+			imgUrl: imgUrl
 		};
 		await db.insert(table.post).values(newPost).execute();
 		return postId;
@@ -64,9 +65,9 @@ export async function createPost (userId: string, title: string, content: string
 	}
 }
 
-export async function updatePost (postId: string, title: string, content: string) {
+export async function updatePost (postId: string, title: string, content: string, imgUrl: string) {
 	try {
-		await db.update(table.post).set({ title, content }).where(eq(table.post.id, postId)).execute();
+		await db.update(table.post).set({ title, content, imgUrl }).where(eq(table.post.id, postId)).execute();
 	} catch (e) {
 		console.log('Error al actualizar el post: ' + e);
 	}

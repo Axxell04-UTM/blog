@@ -144,6 +144,7 @@ export const actions: Actions = {
 		const profileId = formData.get('profile_id');
 		const title = formData.get('title');
 		const content = formData.get('content');
+		const imgUrl = formData.get('img_url');
 		if (!validateProfileId(profileId)) {
 			return fail(401, { message: 'Id de perfil incorrecto' });
 		}
@@ -153,9 +154,12 @@ export const actions: Actions = {
 		if (!validateContent(content)) {
 			return fail(401, { message: 'Contenido no válido' });
 		}
+		if (!validateUrl(imgUrl)) {
+			return fail(401, { message: 'Url no válida' });
+		}
 
 		try {
-			const postId = await createPost(profileId, title, content);
+			const postId = await createPost(profileId, title, content, imgUrl);
 			const posts = await getPosts();
 			const myPosts = await getPostsByUserId(profileId);
 			return {
@@ -172,11 +176,12 @@ export const actions: Actions = {
 		const profileId = formData.get('profile_id');
 		const postId = formData.get('post_id') as string;
 		const newTitle = formData.get('new_title') as string;
-		const newContent = formData.get("new_content") as string;
+		const newContent = formData.get('new_content') as string;
+		const newImgUrl = formData.get('new_img_url') as string;
 		if (!validateProfileId(profileId)) {
 			return fail(401, { message: 'Id de perfil incorrecto' });
 		}
-		await updatePost(postId, newTitle, newContent);
+		await updatePost(postId, newTitle, newContent, newImgUrl);
 		const posts = await getPosts();
 		const myPosts = await getPostsByUserId(profileId);
 
@@ -264,4 +269,8 @@ function validateTitle(title: unknown): title is string {
 
 function validateContent(content: unknown): content is string {
 	return typeof content === 'string';
+}
+
+function validateUrl(url: unknown): url is string {
+	return typeof url === 'string';
 }

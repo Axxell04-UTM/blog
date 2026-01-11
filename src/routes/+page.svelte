@@ -3,12 +3,14 @@
 	import CommentCard from '$lib/components/CommentCard.svelte';
 	import type { Profile } from '$lib/interfaces/profile';
 	import SectionPerfil from '$lib/sections/SectionPerfil.svelte';
-	import { scale, slide } from 'svelte/transition';
+	import { fade, scale, slide } from 'svelte/transition';
 	import type { PageProps } from './$types';
 	import type { Comment } from '$lib/interfaces/comment';
 	import type { Post } from '$lib/interfaces/post';
 	import PostCard from '$lib/components/PostCard.svelte';
 	import { toastMessage } from '$lib/stores';
+	import { CldImage, CldUploadWidget, type CloudinaryUploadWidgetResults } from 'svelte-cloudinary';
+	import Icon from '@iconify/svelte';
 	
 	let session = false;
 	
@@ -20,6 +22,7 @@
 
 	let postView: 'Todas' | 'Mías' = $state('Todas');
 	let formNewPostIsVisible = $state(false);
+	let imgUrlNewPost = $state("");
 
 	function setProfile(newProfile: Profile | undefined) {
 		profile = newProfile;
@@ -38,6 +41,12 @@
 			return;
 		}
 		profile.posts = newPosts;
+	}
+
+	function onImgNewPostUpload (res: CloudinaryUploadWidgetResults) {
+		if (res.event === "success" && (typeof res.info !== "string" && typeof res.info !== "undefined")) {
+			imgUrlNewPost = res.info.url;
+		}
 	}
 
 	// TOGGLE FUNCTIONS
@@ -138,9 +147,30 @@
 							placeholder="Contenido..."
 							class="field-sizing-content flex-1 rounded-md border border-stone-100 bg-stone-50 px-3 py-2 transition focus:ring-2 focus:ring-emerald-200 focus:outline-none"
 						></textarea>
+					</div>					
+					{#if imgUrlNewPost}
+					<div transition:scale class="w-fit relative mx-auto">						
+						<CldImage objectFit="contain" alt="Blog-IMG"  height="200" width="auto" radius={10} src={imgUrlNewPost}  />
+						<div class="absolute inset-0 rounded-md bg-emerald-50/30 backdrop-blur-sm flex items-center justify-center opacity-0 transition duration-500 hover:opacity-100">
+							<button
+								in:fade
+								type="button"
+								class="cursor-pointer rounded-full outline-none p-2 font-semibold text-emerald-600 ring-1 ring-emerald-600 transition duration-500 hover:bg-emerald-600 hover:text-white hover:ring-white"
+								onclick={() => {imgUrlNewPost = ""}}
+							>
+								<Icon icon="iconamoon:trash-bold" class="text-2xl" />
+							</button>
+						</div>
 					</div>
+					{/if}
+					<CldUploadWidget uploadPreset="blog_preset"  let:open let:isLoading onSuccess={onImgNewPostUpload}>
+						<button type="button" onclick={() => open()} disabled={isLoading} class="ring ring-emerald-600 py-1 px-3 rounded-md cursor-pointer hover:bg-emerald-50 transition">
+							Añadir Imagen
+						</button>
+					</CldUploadWidget>					
+					<input type="hidden" name="img_url" value={imgUrlNewPost}>
 					<button
-						class="rounded-md bg-emerald-500 px-4 py-2 font-medium text-white transition hover:bg-emerald-600"
+						class="rounded-md bg-emerald-500 px-4 py-2 font-medium cursor-pointer text-white transition hover:bg-emerald-600"
 					>
 						Publicar
 					</button>

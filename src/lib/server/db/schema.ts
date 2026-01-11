@@ -22,7 +22,8 @@ export const post = pgTable('post', {
 		.references(() => user.id),
 	title: text('title').notNull(),
 	content: text('content').notNull(),
-	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull()
+	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull(),
+	imgUrl: text('imgUrl')
 });
 
 export const comment = pgTable('comment', {

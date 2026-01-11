@@ -4,4 +4,5 @@ export interface Post {
 	title: string;
 	content: string;
 	createdAt: Date;
+	imgUrl?: string | null;
 }
