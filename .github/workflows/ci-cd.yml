@@ -26,7 +26,10 @@ jobs:
         run: npm install
 
       - name: Set up environment variables
-        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "VITE_CLOUDINARY_CLOUD_NAME=${{ secrets.VITE_CLOUDINARY_CLOUD_NAME }}" >> $GITHUB_ENV
+          echo "VITE_CLOUDINARY_API_KEY=${{ secrets.VITE_CLOUDINARY_API_KEY }}" >> $GITHUB_ENV
 
       - name: Ejecutar tests
         run: npm test --if-present
@@ -55,7 +58,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Set up environment variables
-        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "VITE_CLOUDINARY_CLOUD_NAME=${{ secrets.VITE_CLOUDINARY_CLOUD_NAME }}" >> $GITHUB_ENV
+          echo "VITE_CLOUDINARY_API_KEY=${{ secrets.VITE_CLOUDINARY_API_KEY }}" >> $GITHUB_ENV
 
       - name: Construir imagen Docker
         run: |
